@@ -12,7 +12,8 @@ class botHandler:
     def getUpdates(self, offset = None, timeout = glob_timeout):
         params = {'timeout':timeout, 'offset':offset}
         response = requests.get(self.apiURL + 'getupdates', data=params)
-        return response.json()
+        respJson = response.json()['result']
+        return respJson
 
     def getLastUpdate(self):
         result = self.getUpdates()
@@ -28,7 +29,7 @@ class botHandler:
 
     def sendMessage(self, chatID, text):
         params = {'chat_id': chatID, 'text': text}
-        response = requests.post(self.apiURL + 'sendmessage', data=params)
+        response = requests.post(self.apiURL + 'sendMessage', data=params)
         return response
 
 def main():
@@ -36,7 +37,7 @@ def main():
     now = datetime.datetime.now()
     last = now
     offsetNext = None
-    Ginge_420_bot.getUpdates(offset=offsetNext)
+    Ginge_420_bot.getUpdates(offsetNext)
     lastUpdateID = Ginge_420_bot.getLastUpdate()
     lastChatID = lastUpdateID['message']['chat']['id']
     Ginge_420_bot.sendMessage(lastChatID, 'Hello world!')
