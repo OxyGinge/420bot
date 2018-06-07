@@ -36,6 +36,10 @@ def main():
     now = datetime.datetime.now()
     last = now
     offsetNext = None
+    Ginge_420_bot.getUpdates(offset=offsetNext)
+    lastUpdateID = Ginge_420_bot.getLastUpdate()
+    lastChatID = lastUpdateID['message']['chat']['id']
+    Ginge_420_bot.sendMessage(lastChatID, 'Hello world!')
     while True:
         Ginge_420_bot.getUpdates(offset=offsetNext)
         lastUpdateID = Ginge_420_bot.getLastUpdate()
