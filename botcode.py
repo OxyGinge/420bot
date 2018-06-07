@@ -14,7 +14,7 @@ class botHandler:
         response = requests.get(self.apiURL + 'getupdates', data=params)
         return response.json()
 
-    def lastUpdate(self):
+    def getLastUpdate(self):
         result = self.getUpdates()
         if len(result) > 0:
             updateLast = result[-1]
