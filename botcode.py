@@ -11,7 +11,8 @@ class botHandler:
 
     def getUpdates(self, offset = None, timeout = glob_timeout):
         params = {'timeout':timeout, 'offset':offset}
-        response = requests.get(self.apiURL + 'getUpdates', data=params)
+        method = 'getUpdates'
+        response = requests.get(self.apiURL + method, data=params)
         respJson = response.json()['result']
         return respJson
 
@@ -29,28 +30,18 @@ class botHandler:
 
     def sendMessage(self, chatID, text):
         params = {'chat_id': chatID, 'text': text}
-        response = requests.post(self.apiURL + 'sendMessage', data=params)
+        method = 'sendMessage'
+        response = requests.post(self.apiURL + method, data=params)
         return response
 
 def main():
     Ginge_420_bot = botHandler(glob_token)
-    now = datetime.datetime.now()
-    last = now
     offsetNext = None
     Ginge_420_bot.getUpdates(offsetNext)
-    lastUpdateID = Ginge_420_bot.getLastUpdate()
+    lastUpdate = Ginge_420_bot.getLastUpdate()
+    lastUpdateID = lastUpdate['update_id']
     lastChatID = lastUpdateID['message']['chat']['id']
     Ginge_420_bot.sendMessage(lastChatID, 'Hello world!')
-    while True:
-        Ginge_420_bot.getUpdates(offset=offsetNext)
-        lastUpdateID = Ginge_420_bot.getLastUpdate()
-        lastChatID = lastUpdateID['message']['chat']['id']
-        now = datetime.datetime.now()
-        if now.second != last.second:
-            Ginge_420_bot.sendMessage(lastChatID, 'Time: {0}:{1}:{2}'.format(now.hour,now.minute,now.second))
-        last = now
-        offsetNext = lastUpdateID + 1
-
 
 if __name__ == '__main__':
     try:
